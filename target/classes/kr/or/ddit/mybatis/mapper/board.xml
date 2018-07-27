@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+
+  <select id="selectAllLprod" resultType="boardVo">
+    select * from board_tmp
+  </select>
+  
+  <!-- board 정보 페이징 조회 -->
+  	<select id="getboardList" parameterType="map" resultType="boardVo">
+  		SELECT * 
+		  FROM
+		(SELECT a.*, ROWNUM rn
+		  FROM
+		(SELECT *
+		  FROM board_tmp
+		  ORDER BY NO) a)
+		  WHERE rn BETWEEN (#{page}-1)*#{pageSize}+1 AND #{page}*#{pageSize}
+  	</select>
+  	
+  	<select id="getbpardListCnt" resultType="int">
+  		select count(*)	from board_tmp
+  	</select>
+</mapper>
